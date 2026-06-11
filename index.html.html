@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chidimma Nwabueze</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --paper:      #F7F3EE;
+  --ink:        #1F1F1F;
+  --muted:      #5A5A5A;
+  --accent:     #8A6F5A;
+  --highlight:  #C2A78A;
+  --rule:       #DDD5C8;
+  --paper-warm: #EDE6DB;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 6vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  transition: box-shadow 0.3s;
+}
+nav.scrolled { box-shadow: 0 2px 20px rgba(31,31,31,0.07); }
+
+.nav-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.nav-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--ink); }
+
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+.nav-burger span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--ink);
+  transition: all 0.3s;
+}
+
+/* ── HERO ── */
+#hero {
+  padding: calc(56px + 4.5rem) 6vw 5rem;
+  max-width: 780px;
+}
+
+.hero-left { }
+
+h1.hero-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+}
+h1.hero-headline span {
+  display: block;
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-deck {
+  font-size: 1.05rem;
+  color: var(--muted);
+  max-width: 480px;
+  line-height: 1.85;
+  margin-bottom: 2.5rem;
+}
+
+.hero-cta-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.7rem 1.6rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-primary:hover { background: var(--accent); transform: translateY(-1px); }
+
+.btn-ghost {
+  display: inline-block;
+  padding: 0.7rem 1.6rem;
+  border: 1px solid var(--rule);
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+/* photo block (in about section) */
+.about-photo-wrap {
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.photo-frame {
+  width: 200px;
+  flex-shrink: 0;
+  aspect-ratio: 3/4;
+  background: var(--paper-warm);
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.photo-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.photo-placeholder:hover { background: rgba(138,111,90,0.05); }
+.photo-placeholder-ring {
+  width: 52px;
+  height: 52px;
+  border: 1.5px dashed var(--highlight);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.photo-placeholder-ring svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--highlight);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.photo-placeholder p {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--highlight);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.photo-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 0.5rem;
+}
+.photo-meta p {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rule);
+}
+
+#photo-input { display: none; }
+
+/* ── SECTIONS SHARED ── */
+section { padding: 6rem 6vw; }
+section + section { border-top: 1px solid var(--rule); }
+
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-label::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--rule);
+}
+
+h2.display {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+}
+h2.display em { font-style: italic; color: var(--accent); }
+
+/* ── ABOUT ── */
+#about .about-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 6rem;
+  align-items: start;
+  margin-top: 1.5rem;
+}
+
+.about-sidebar {
+  position: sticky;
+  top: 80px;
+}
+
+.about-sidebar h2 { margin-bottom: 2rem; }
+
+.about-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.tag {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--rule);
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  width: fit-content;
+}
+
+.about-body p {
+  color: var(--muted);
+  margin-bottom: 1.4rem;
+  font-size: 1.02rem;
+  max-width: 60ch;
+  line-height: 1.82;
+}
+.about-body p:first-of-type {
+  font-size: 1.12rem;
+  color: var(--ink);
+  font-weight: 300;
+}
+.about-body p:last-of-type { margin-bottom: 0; }
+
+/* ── PROJECTS ── */
+#projects .projects-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: end;
+  margin-bottom: 4rem;
+}
+#projects .projects-intro p {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+.project-card {
+  border: 1px solid var(--rule);
+  padding: 2.25rem 2.5rem;
+  margin-bottom: 2px;
+  position: relative;
+  transition: border-color 0.2s;
+}
+.project-card:hover { border-color: var(--accent); }
+
+.project-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--rule);
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+}
+
+.project-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.85rem;
+}
+
+.project-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  line-height: 1.3;
+  margin-bottom: 0.85rem;
+  letter-spacing: -0.01em;
+}
+
+.project-card > p {
+  color: var(--muted);
+  font-size: 0.925rem;
+  line-height: 1.78;
+  margin-bottom: 1.25rem;
+  max-width: 72ch;
+}
+
+.project-toggle {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.project-toggle .arr { transition: transform 0.25s; display: inline-block; }
+.project-toggle.open .arr { transform: rotate(90deg); }
+
+.project-detail {
+  display: none;
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--rule);
+}
+.project-detail.open { display: block; }
+
+.case-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.case-block { }
+.case-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+.case-block p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.case-full {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--paper-warm);
+}
+
+/* ── WRITING ── */
+#writing .writing-intro {
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 56ch;
+  margin-bottom: 3rem;
+  line-height: 1.85;
+}
+
+.writing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+
+.writing-item {
+  background: var(--paper);
+  padding: 1.75rem 2rem;
+  text-decoration: none;
+  display: block;
+  transition: background 0.2s;
+}
+.writing-item:hover { background: var(--paper-warm); }
+
+.writing-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+.writing-item h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+.writing-item p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.68;
+}
+
+.writing-cta {
+  margin-top: 2.5rem;
+}
+
+/* ── ADVOCACY ── */
+#advocacy .advocacy-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-top: 2.5rem;
+  align-items: start;
+}
+
+.advocacy-feature {
+  background: var(--paper-warm);
+  padding: 2.5rem;
+}
+.advocacy-feature .adv-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+.advocacy-feature h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  line-height: 1.28;
+  margin-bottom: 1.25rem;
+}
+.advocacy-feature p {
+  color: var(--muted);
+  font-size: 0.925rem;
+  line-height: 1.82;
+  margin-bottom: 1rem;
+}
+.advocacy-feature p:last-of-type { margin-bottom: 0; }
+
+.advocacy-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.adv-item {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--rule);
+}
+.adv-item:last-child { border-bottom: none; padding-bottom: 0; }
+.adv-item .adv-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+.adv-item h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+.adv-item p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.72;
+}
+
+/* ── CONTACT ── */
+#contact { background: var(--ink); }
+
+#contact .section-label {
+  color: rgba(247,243,238,0.38);
+}
+#contact .section-label::after { background: rgba(247,243,238,0.18); }
+
+#contact .contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+#contact h2.display { color: var(--paper); }
+#contact h2.display em { color: var(--highlight); }
+
+#contact .contact-sub {
+  color: rgba(247,243,238,0.5);
+  font-size: 1rem;
+  margin-top: 1.4rem;
+  max-width: 42ch;
+  line-height: 1.85;
+}
+
+.contact-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+.contact-item-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--highlight);
+  margin-bottom: 0.2rem;
+}
+.contact-item a {
+  color: var(--paper);
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(247,243,238,0.12);
+  padding-bottom: 0.2rem;
+  display: inline-block;
+  transition: border-color 0.2s;
+}
+.contact-item a:hover { border-color: var(--highlight); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(247,243,238,0.08);
+  padding: 1.5rem 6vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+footer span {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: rgba(247,243,238,0.28);
+}
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ── MARK (signature underline) ── */
+.mark { position: relative; }
+.mark::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -2px;
+  height: 2px;
+  background: var(--highlight);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s cubic-bezier(0.4,0,0.2,1) 0.25s;
+}
+.reveal.visible .mark::after { transform: scaleX(1); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  #about .about-layout,
+  #projects .projects-intro,
+  .advocacy-layout,
+  #contact .contact-layout,
+  .writing-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .case-grid { grid-template-columns: 1fr; }
+  .about-sidebar { position: static; }
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 56px; left: 0; right: 0;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    padding: 1.25rem 6vw;
+    gap: 1.1rem;
+  }
+  .nav-burger { display: flex; }
+  .about-photo-wrap { gap: 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .mark::after { transition: none; }
+  .reveal { opacity: 1; transform: none; }
+  .mark::after { transform: scaleX(1); }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#hero" class="nav-name">Chidimma Nwabueze</a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#writing">Writing</a></li>
+    <li><a href="#advocacy">Advocacy</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-burger" id="nav-burger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left reveal">
+    <h1 class="hero-headline">
+      Hello, I am<br>
+      <span>Chidimma Nwabueze.</span>
+    </h1>
+    <p class="hero-deck">
+      I have worked in writing, editing, and content development. Today, my interests are increasingly focused on health communication and writing — particularly how clear, thoughtful communication can improve health literacy, amplify community voices, and contribute to better health outcomes.
+    </p>
+    <div class="hero-cta-row">
+      <a href="https://medium.com/@chidimmacrystalnwabueze" target="_blank" rel="noopener" class="btn-primary">See my work</a>
+      <a href="https://www.linkedin.com/in/chidimma-nwabueze-045075a4?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener" class="btn-ghost">Get in touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label reveal">About</p>
+  <div class="about-layout">
+    <div class="about-sidebar reveal">
+      <h2 class="display"><span class="mark">Writer.</span><br><em>Editor.</em></h2>
+      <div class="about-tags" style="margin-top:2rem;">
+        <span class="tag">Content Writing</span>
+        <span class="tag">Health Communication</span>
+        <span class="tag">Community Engagement</span>
+      </div>
+    </div>
+
+    <div class="about-body reveal">
+      <p>
+        I am a writer, editor, and researcher with experience across editorial work, content development, teaching, and field-based communication projects.
+      </p>
+      <p>
+        My work has involved creating and refining content for diverse audiences, leading editorial teams, and translating complex ideas into clear, accessible communication. In my current role at a content agency, I manage writers and oversee the development of structured, audience-focused content across multiple industries.
+      </p>
+      <p>
+        I have also worked on community and social impact projects that involve direct engagement with health-related issues. This includes field research on Female Genital Mutilation (FGM), where I conducted interviews and supported qualitative analysis for reporting on community experiences and behavior change. I have also explored maternal mental health through a short film on postpartum depression, developed after researching cultural perceptions and barriers to care.
+      </p>
+      <p>
+        Across these experiences, my focus has consistently been on how communication shapes understanding and decision-making. My current interest is in health communication and writing — particularly how clear, culturally aware messaging can improve health literacy, strengthen community understanding, and support better health outcomes.
+      </p>
+
+      <div class="about-photo-wrap">
+        <div class="photo-frame" id="photo-frame">
+          <img id="photo-img" src="" alt="Chidimma Nwabueze" style="display:none;">
+          <div class="photo-placeholder" id="photo-placeholder" onclick="document.getElementById('photo-input').click()">
+            <div class="photo-placeholder-ring">
+              <svg viewBox="0 0 24 24"><path d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M4 16c0-2.2 3.6-4 8-4s8 1.8 8 4"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+            </div>
+            <p>Click to add<br>your photo</p>
+          </div>
+        </div>
+        <div class="photo-meta">
+          <p>Chidimma Nwabueze</p>
+        </div>
+      </div>
+      <input type="file" id="photo-input" accept="image/*">
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label reveal">Featured Projects</p>
+  <div class="projects-intro">
+    <h2 class="display reveal">Work that asks<br><em>hard questions.</em></h2>
+    <p class="reveal">
+      These projects sit at the center of my transition into health communication — each one involves research, listening, and translating lived experience into public-facing storytelling.
+    </p>
+  </div>
+
+  <!-- Project 01 -->
+  <div class="project-card reveal" id="p1">
+    <span class="project-num">01</span>
+    <p class="project-tag">Film · Mental Health Awareness</p>
+    <h3>"Inversion" — A short film on postpartum depression</h3>
+    <p>A scripted short film created to raise awareness about postpartum depression in Nigerian communities, developed from research into women's lived experiences and the cultural silence surrounding maternal mental health.</p>
+    <button class="project-toggle" onclick="toggleProject('p1d', this)">
+      Read case study <span class="arr">→</span>
+    </button>
+    <div class="project-detail" id="p1d">
+      <div class="case-grid">
+        <div class="case-block">
+          <p class="case-label">Context</p>
+          <p>Postpartum depression is often unspoken in many Nigerian communities, where motherhood is expected to be joyful and emotionally uncomplicated. I approached this silence as both a storytelling gap and a communication challenge.</p>
+        </div>
+        <div class="case-block">
+          <p class="case-label">My Role</p>
+          <p>Researcher and scriptwriter. I developed the narrative from initial research through to final script production, collaborating with a media team to bring the film to completion.</p>
+        </div>
+        <div class="case-block">
+          <p class="case-label">Research &amp; Development</p>
+          <p>I explored women's experiences of postpartum depression through secondary research and qualitative listening, focusing on how cultural expectations shape whether women speak about emotional distress after childbirth.</p>
+        </div>
+        <div class="case-block">
+          <p class="case-label">Approach</p>
+          <p>Rather than presenting information directly, I chose fiction as the primary medium. The film format allowed the subject to be experienced emotionally rather than explained clinically. The title <em>Inversion</em> reflects the contrast between societal expectations of motherhood and private emotional reality.</p>
+        </div>
+      </div>
+      <div class="case-full">
+        <p class="case-label">Key Insight</p>
+        <p style="font-size:0.875rem; color:var(--muted); line-height:1.75;">This project reinforced the role of storytelling in shaping how health issues are understood. In this context, communication is not only about information — it is about creating space for experiences that are often left unspoken.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project 02 -->
+  <div class="project-card reveal" id="p2">
+    <span class="project-num">02</span>
+    <p class="project-tag">Field Research · Advocacy Communication</p>
+    <h3>Advocacy on Female Genital Mutilation (FGM) in Akwuke, Enugu State</h3>
+    <p>Volunteer research and communication work for the Society for the Improvement of Rural People, funded by the Wallace Global Fund through the Global Media Campaign to End FGM.</p>
+    <button class="project-toggle" onclick="toggleProject('p2d', this)">
+      Read case study <span class="arr">→</span>
+    </button>
+    <div class="project-detail" id="p2d">
+      <div class="case-grid">
+        <div class="case-block">
+          <p class="case-label">Context</p>
+          <p>The project aimed to end Female Genital Mutilation in Akwuke, Enugu State — a deeply entrenched cultural practice — through community engagement, behavior change communication, and survivor-centered advocacy. I joined as a volunteer researcher, contributing to the research and documentation phases.</p>
+        </div>
+        <div class="case-block">
+          <p class="case-label">My Role</p>
+          <p>Volunteer researcher and writer. I conducted semi-structured interviews with participants, transcribed and coded qualitative data, and synthesized findings into a summary report used to guide project activities. I also authored a published Medium article documenting field experiences and survivor stories.</p>
+        </div>
+        <div class="case-block">
+          <p class="case-label">Research Process</p>
+          <p>Using semi-structured interview protocols, I gathered first-person accounts from community members about barriers to FGM abandonment and the drivers of behavior change. I applied thematic analysis to surface patterns across responses — identifying recurring tensions between community pressure, economic incentives, and the desire to protect daughters.</p>
+        </div>
+        <div class="case-block">
+          <p class="case-label">Communication Approach</p>
+          <p>The published article was written for a broader public audience beyond the project itself. I focused on centering survivor voices and personal transformation rather than statistics alone, believing that emotional resonance drives public engagement with difficult health and rights issues.</p>
+        </div>
+      </div>
+      <div class="case-full">
+        <p class="case-label">Key Insight</p>
+        <p style="font-size:0.875rem; color:var(--muted); line-height:1.75;">This project deepened my understanding of how research findings must be translated differently depending on audience — a funder report, a practitioner brief, and a public essay serve very different communicative purposes, even when they draw from the same data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WRITING -->
+<section id="writing">
+  <p class="section-label reveal">Writing Portfolio</p>
+  <h2 class="display reveal">Selected <em>writing</em><br>and published work.</h2>
+  <p class="writing-intro reveal">
+    I write about health, culture, and community — making space for the personal and the empirical to inform one another.
+  </p>
+
+  <div class="writing-grid reveal">
+    <a href="https://medium.com/@chidimmacrystalnwabueze/my-aunt-trusts-the-chemist-more-than-her-doctor-and-i-didnt-know-how-to-respond-8b5f29a132cc" target="_blank" rel="noopener" class="writing-item">
+      <p class="writing-meta">Essay · Health Literacy · Medium, 2025</p>
+      <h4>My Aunt Trusts the Chemist More Than Her Doctor — and I Didn't Know How to Respond</h4>
+      <p>A personal essay exploring informal healthcare-seeking behavior in Nigerian communities, and the communication gaps that drive patients away from formal health systems toward self-medication and lay advice.</p>
+    </a>
+
+    <a href="https://medium.com/@chidimmacrystalnwabueze" target="_blank" rel="noopener" class="writing-item">
+      <p class="writing-meta">Field Reportage · Advocacy · Medium</p>
+      <h4>Unveiling the Reality: A Journey Towards Freedom from Female Genital Mutilation</h4>
+      <p>Personal transformation and survivor stories from rural Enugu fieldwork — centering community voices and the drivers of behavior change. Written from field interviews and published to a professional audience.</p>
+    </a>
+
+    <a href="https://medium.com/@chidimmacrystalnwabueze" target="_blank" rel="noopener" class="writing-item">
+      <p class="writing-meta">Health Communication · In Progress</p>
+      <h4>On Maternal Mental Health and the Limits of Clinical Language</h4>
+      <p>Exploring how the clinical framing of postpartum depression can create distance for women whose experiences do not match biomedical narratives — and what more culturally responsive communication might look like.</p>
+    </a>
+
+    <a href="https://medium.com/@chidimmacrystalnwabueze" target="_blank" rel="noopener" class="writing-item">
+      <p class="writing-meta">Health &amp; Community · Medium</p>
+      <h4>What Happens When Communities Don't Trust the Health System</h4>
+      <p>An exploration of institutional trust, community health behavior, and why the relationship between patients and formal healthcare providers is a communication problem as much as it is a policy problem.</p>
+    </a>
+  </div>
+
+  <div class="writing-cta reveal">
+    <a href="https://medium.com/@chidimmacrystalnwabueze" target="_blank" rel="noopener" class="btn-ghost">Read more on Medium →</a>
+  </div>
+</section>
+
+<!-- ADVOCACY -->
+<section id="advocacy">
+  <p class="section-label reveal">Community &amp; Advocacy Work</p>
+  <h2 class="display reveal">Health begins<br>in <em>community.</em></h2>
+
+  <div class="advocacy-layout reveal">
+    <div class="advocacy-feature">
+      <p class="adv-label">Primary Initiative</p>
+      <h3>End FGM in Akwuke — Society for the Improvement of Rural People</h3>
+      <p>Since 2022, I have volunteered with SIRP's FGM abandonment program in Akwuke, Enugu State, Nigeria — funded through the Wallace Global Fund's Global Media Campaign to End FGM.</p>
+      <p>My contributions have included program logistics, participant coordination, conducting interviews with survivors to inform project reports, and active participation in the #EnuguYouthEndFGM initiative — a media-led campaign aimed at ending FGM in Nigeria by 2030.</p>
+      <p>This work has given me direct experience of what health communication looks like at the community level: relationship-dependent, culturally embedded, and consequential.</p>
+    </div>
+
+    <div class="advocacy-list">
+      <div class="adv-item">
+        <p class="adv-label">Youth Advocacy</p>
+        <h4>#EnuguYouthEndFGM Initiative</h4>
+        <p>Active participant in the youth-led media campaign using social channels and community engagement to shift cultural norms around FGM in Enugu State, contributing to the national eradication target by 2030.</p>
+      </div>
+      <div class="adv-item">
+        <p class="adv-label">Climate &amp; Health</p>
+        <h4>Enugu State Local Adaptation Plan of Action Review Forum</h4>
+        <p>Participated in the policy forum examining the environmental and health impacts of climate change at the local level — reflecting my understanding of the connections between climate equity and public health.</p>
+      </div>
+      <div class="adv-item">
+        <p class="adv-label">Education</p>
+        <h4>Civic Education Teacher — Community Secondary School, Delta State</h4>
+        <p>Delivered civic education lessons to Junior Secondary classes and served as Advisory Teacher for Senior Secondary students, 2015–2016. Teaching civic literacy is, at its core, a practice in accessible public communication.</p>
+      </div>
+      <div class="adv-item">
+        <p class="adv-label">Mental Health Awareness</p>
+        <h4>Postpartum Depression Awareness — "Inversion"</h4>
+        <p>Scripted and co-produced a short film to raise awareness about postpartum depression — an extension of advocacy values through creative media production.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label reveal">Contact</p>
+  <div class="contact-layout">
+    <div class="reveal">
+      <h2 class="display">Let's make<br>something<br><em>meaningful.</em></h2>
+      <p class="contact-sub">
+        I am open to freelance health writing, content strategy, research communication projects, and collaborations at the intersection of storytelling and public health. If you are working on something in that space, I would love to hear from you.
+      </p>
+    </div>
+    <div class="contact-items reveal">
+      <div class="contact-item">
+        <p class="contact-item-label">Email</p>
+        <a href="mailto:chidimmacrystalnwabueze@gmail.com">chidimmacrystalnwabueze@gmail.com</a>
+      </div>
+      <div class="contact-item">
+        <p class="contact-item-label">LinkedIn</p>
+        <a href="https://www.linkedin.com/in/chidimma-nwabueze-045075a4?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener">linkedin.com/in/chidimma-nwabueze</a>
+      </div>
+      <div class="contact-item">
+        <p class="contact-item-label">Writing on Medium</p>
+        <a href="https://medium.com/@chidimmacrystalnwabueze" target="_blank" rel="noopener">medium.com/@chidimmacrystalnwabueze</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Chidimma Nwabueze</span>
+  <span>2025</span>
+</footer>
+
+<script>
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+const burger = document.getElementById('nav-burger');
+const navLinks = document.getElementById('nav-links');
+burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
+reveals.forEach(el => obs.observe(el));
+
+function toggleProject(id, btn) {
+  const d = document.getElementById(id);
+  const open = d.classList.contains('open');
+  d.classList.toggle('open', !open);
+  btn.classList.toggle('open', !open);
+  btn.childNodes[0].textContent = open ? 'Read case study ' : 'Close case study ';
+}
+
+// Photo upload
+const photoInput = document.getElementById('photo-input');
+const photoImg = document.getElementById('photo-img');
+const photoPlaceholder = document.getElementById('photo-placeholder');
+photoInput.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  photoImg.src = url;
+  photoImg.style.display = 'block';
+  photoPlaceholder.style.display = 'none';
+});
+</script>
+</body>
+</html>
